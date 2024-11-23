@@ -43,13 +43,15 @@ Alice AI Hellothon 2024 Team 1's Repository
 
 ## 1.5 팀 소개
 ### AI Alice Hellothon 2024 1팀
-👩‍💻 심유경 (PM)
-👩‍💻 임승재 (BE)
-👩‍💻 엄석훈 (FE)
-👩‍💻 박송이 (Designer)
+👩‍💻 [심유경](https://github.com/YukyungShim) (PM)
+👩‍💻 [임승재](https://github.com/SeungjaeLim) (BE)
+👩‍💻 [엄석훈](https://github.com/SeokhunEom) (FE)
+👩‍💻 [박송이](https://github.com/songye38) (Designer)
 
 
 ## 1.6 시연 영상 (생략 가능)
+🎞 시연 영상 [보러가기]()
+
 
 
 # 2. 프로젝트 아키텍처
@@ -93,8 +95,8 @@ Alice AI Hellothon 2024 Team 1's Repository
 ## 6.1 팀 회고
 
 ## 6.2 개인 회고
-👩‍💻 박송이
-👩‍💻 심유경
-👩‍💻 엄석훈
-👩‍💻 임승재
+👩‍💻 [박송이]()
+👩‍💻 [심유경]()
+👩‍💻 [엄석훈]()
+👩‍💻 [임승재]()
 
