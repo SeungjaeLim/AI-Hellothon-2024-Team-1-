@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from app import models, schemas
+from typing import List, Optional
 
 
 # Elders
@@ -259,3 +260,31 @@ def add_image_to_record(db: Session, record_id: int, image_url: str):
     db.commit()
     db.refresh(image)
     return image
+
+def get_image_by_record_id(db: Session, record_id: int) -> Optional[str]:
+    """
+    Fetch the single image URL for a record.
+    """
+    image = db.query(models.Image).filter(models.Image.record_id == record_id).first()
+    return image.url if image else None
+
+def get_keywords_by_record_id(db: Session, record_id: int) -> List[str]:
+    """
+    Fetch the list of keywords for a record.
+    """
+    keywords = (
+        db.query(models.Keyword.keyword)
+        .join(models.RecordKeyword, models.RecordKeyword.keyword_id == models.Keyword.id)
+        .filter(models.RecordKeyword.record_id == record_id)
+        .all()
+    )
+    return [keyword[0] for keyword in keywords]  # Extract the keyword strings
+
+def add_record_question(db: Session, record_id: int, question_id: int):
+    """
+    Link a question to a record in the record_questions table.
+    """
+    record_question = models.RecordQuestion(record_id=record_id, question_id=question_id)
+    db.add(record_question)
+    db.commit()
+    return record_question

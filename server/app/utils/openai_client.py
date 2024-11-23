@@ -77,7 +77,7 @@ def extract_keywords(content: str) -> List[str]:
     response = client.chat.completions.create(
         model="gpt-4o",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant that extracts keywords."},
+            {"role": "system", "content": "You are a helpful assistant that extracts keywords. just keyword and comma separated"},
             {"role": "user", "content": f"Extract keywords from the following text:\n{content}"}
         ]
     )

@@ -65,9 +65,12 @@ class Record(RecordBase):
     id: int
     elder_id: int
     created_at: datetime
+    image: Optional[str]  # Single image URL
+    keywords: List[str]  # List of associated keywords
 
     class Config:
         orm_mode = True
+
 
 
 # Question schemas
