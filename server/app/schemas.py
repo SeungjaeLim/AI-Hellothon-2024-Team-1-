@@ -287,3 +287,15 @@ class Report(BaseModel):
 
     class Config:
         orm_mode = True
+        
+class QuestionWithAnswer(BaseModel):
+    """
+    Schema for a question with its first answer.
+    """
+    id: int
+    text: str
+    created_at: datetime
+    first_answer: Optional[dict] = None  # Include first answer as a dictionary
+
+    class Config:
+        orm_mode = True

@@ -76,17 +76,42 @@ def finish_guide(
     return guide
 
 
-@router.get("/{guide_id}/questions", response_model=List[schemas.Question])
+@router.get("/{guide_id}/questions", response_model=List[schemas.QuestionWithAnswer])
 def get_questions_for_guide(guide_id: int, db: Session = Depends(database.get_db)):
     """
-    Retrieve all questions linked to a specific activity guide.
+    Retrieve all questions linked to a specific activity guide, including the first answer for each question.
     """
+    # Validate the guide
     guide = crud.get_activity_guide_by_id(db, guide_id=guide_id)
     if not guide:
         raise HTTPException(status_code=404, detail="Guide not found")
 
+    # Fetch questions linked to the guide
     questions = crud.get_questions_for_activity_guide(db, guide_id=guide_id)
     if not questions:
         raise HTTPException(status_code=404, detail="No questions found for this guide")
 
-    return questions
+    # Include the first answer for each question
+    enriched_questions = []
+    for question in questions:
+        first_answer = (
+            db.query(models.Answer)
+            .filter(models.Answer.question_id == question.id)
+            .order_by(models.Answer.response_date.asc())
+            .first()
+        )
+
+        enriched_questions.append({
+            "id": question.id,
+            "text": question.text,
+            "created_at": question.created_at,
+            "first_answer": {
+                "id": first_answer.id,
+                "response": first_answer.response,
+                "response_date": first_answer.response_date,
+                "created_at": first_answer.created_at,
+            } if first_answer else None,
+        })
+
+    return enriched_questions
+
