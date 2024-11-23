@@ -7,5 +7,8 @@ from .openai_client import (
     extract_keywords,
     generate_image,
     generate_follow_up_question,
-    get_text_embedding
+    get_text_embedding,
+    generate_image_elice,
+    generate_tts,
+    generate_tts_openai
 )

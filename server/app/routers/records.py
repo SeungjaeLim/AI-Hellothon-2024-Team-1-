@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 from app import schemas, crud, database, models
-from app.utils.openai_client import summarize_text, generate_title, extract_keywords, generate_image
+from app.utils.openai_client import summarize_text, generate_title, extract_keywords, generate_image, generate_image_elice
 
 router = APIRouter()
 
@@ -120,7 +120,7 @@ def create_todays_record(
     summary = summarize_text(combined_text)
     title = generate_title(summary)
     keywords = extract_keywords(summary)
-    image_path = generate_image(", ".join(keywords))  # Save the image locally
+    image_path = generate_image_elice(", ".join(keywords))  # Save the image locally
 
     # Create the record
     record_data = schemas.RecordCreate(

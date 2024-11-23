@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
+from fastapi.responses import FileResponse
 from app import schemas, crud, database, models
-from app.utils.openai_client import generate_follow_up_question
+from app.utils.openai_client import generate_follow_up_question, generate_tts, generate_tts_openai
 router = APIRouter()
 
 
@@ -146,3 +147,28 @@ def generate_follow_up_question_api(
         generated_question=follow_up_question,
         question_id=new_question.id,
     )
+
+@router.get("/tts/{question_id}", summary="Generate TTS for a Question", description="Generate TTS audio for a specific question by its ID.")
+def generate_tts_for_question(question_id: int, db: Session = Depends(database.get_db)):
+    """
+    Generate TTS for a question by its ID.
+
+    Args:
+        question_id (int): ID of the question.
+
+    Returns:
+        FileResponse: The generated TTS audio file.
+    """
+    # Fetch the question from the database
+    question = crud.get_question_by_id(db, question_id=question_id)
+    if not question:
+        raise HTTPException(status_code=404, detail="Question not found")
+
+    # Generate TTS audio using the Elice API
+    try:
+        tts_file_path = generate_tts_openai(question.text)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"TTS generation failed: {str(e)}")
+
+    # Return the audio file as a response
+    return FileResponse(tts_file_path, media_type="audio/mpeg", filename=f"question_{question_id}.mp3")
