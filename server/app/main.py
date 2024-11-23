@@ -5,7 +5,7 @@ from app.database import Base, engine
 
 # Initialize FastAPI app
 app = FastAPI(
-    title="Elderly Care Management API",
+    title="샘",
     description="API for managing records, questions, lesson plans, and preferences for elderly care",
     version="1.0.0"
 )
