@@ -9,7 +9,7 @@ router = APIRouter()
 @router.get("/", response_model=List[schemas.Elder])
 def get_all_elders(db: Session = Depends(database.get_db)):
     """
-    Retrieve all elders.
+    모든 노인 정보 제공
     """
     elders = crud.get_all_elders(db)
     if not elders:
@@ -20,7 +20,7 @@ def get_all_elders(db: Session = Depends(database.get_db)):
 @router.get("/{elder_id}", response_model=schemas.Elder)
 def get_elder_by_id(elder_id: int, db: Session = Depends(database.get_db)):
     """
-    Retrieve a single elder by their ID.
+    id로 특정 노인 정보 제공
     """
     elder = crud.get_elder_by_id(db, elder_id=elder_id)
     if not elder:
@@ -31,7 +31,7 @@ def get_elder_by_id(elder_id: int, db: Session = Depends(database.get_db)):
 @router.post("/", response_model=schemas.Elder)
 def create_elder(elder: schemas.ElderCreate, db: Session = Depends(database.get_db)):
     """
-    Create a new elder.
+    새로운 노인 정보 생성
     """
     return crud.create_elder(db, elder)
 
@@ -39,7 +39,7 @@ def create_elder(elder: schemas.ElderCreate, db: Session = Depends(database.get_
 @router.get("/{elder_id}/keywords", response_model=List[schemas.Keyword])
 def get_elder_keywords(elder_id: int, db: Session = Depends(database.get_db)):
     """
-    Retrieve all keywords associated with an elder and their preferences.
+    노인의 키워드 정보 제공 (현재 사용 X)
     """
     elder = crud.get_elder_by_id(db, elder_id=elder_id)
     if not elder:
@@ -55,7 +55,7 @@ def get_elder_keywords(elder_id: int, db: Session = Depends(database.get_db)):
 @router.patch("/{elder_id}/keywords/{keyword_id}", response_model=schemas.KeywordPreference)
 def toggle_keyword_preference(elder_id: int, keyword_id: int, db: Session = Depends(database.get_db)):
     """
-    Toggle the preference for a specific keyword for an elder.
+    노인의 키워드 선호도 토글 (현재 사용 X)
     """
     elder = crud.get_elder_by_id(db, elder_id=elder_id)
     if not elder:
