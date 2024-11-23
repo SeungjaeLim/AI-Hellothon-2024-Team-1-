@@ -1,0 +1,40 @@
+# Environment Files
+.env
+
+# Python-related
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.env
+
+# Virtual Environment
+venv/
+env/
+.venv/
+
+# IDEs and Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs and Debug Files
+*.log
+*.sqlite3
+
+# FastAPI and Uvicorn
+*.pid
+*.db
+instance/
+
+# Pytest
+.cache/
+*.pytest_cache/
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Docker (if applicable)
+*.dockerignore
