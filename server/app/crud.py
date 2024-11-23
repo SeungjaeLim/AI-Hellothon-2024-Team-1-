@@ -288,3 +288,13 @@ def add_record_question(db: Session, record_id: int, question_id: int):
     db.add(record_question)
     db.commit()
     return record_question
+
+def create_question(db: Session, question: schemas.QuestionCreate):
+    """
+    Create a new question.
+    """
+    db_question = models.Question(**question.dict())
+    db.add(db_question)
+    db.commit()
+    db.refresh(db_question)
+    return db_question

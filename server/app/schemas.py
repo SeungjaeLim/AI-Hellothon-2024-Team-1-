@@ -1,6 +1,8 @@
 from pydantic import BaseModel
 from typing import Optional, List
 from datetime import date, datetime
+from pydantic import BaseModel
+from typing import List
 
 
 # Elder schemas
@@ -72,7 +74,19 @@ class Record(RecordBase):
         orm_mode = True
 
 
+class GenerateFollowUpInput(BaseModel):
+    """
+    Input schema for generating a follow-up question.
+    """
+    elder_id: int
+    question_ids: List[int]
 
+class GenerateFollowUpResponse(BaseModel):
+    """
+    Response schema for the generated follow-up question.
+    """
+    generated_question: str
+    question_id: int
 # Question schemas
 class QuestionBase(BaseModel):
     """

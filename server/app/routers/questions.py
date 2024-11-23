@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 from app import schemas, crud, database, models
-
+from app.utils.openai_client import generate_follow_up_question
 router = APIRouter()
 
 
@@ -103,3 +103,49 @@ def add_random_question(db: Session = Depends(database.get_db)):
 
     question_data = schemas.QuestionCreate(text=random_text)
     return crud.create_question(db, question=question_data)
+
+@router.post(
+    "/generate_follow_up",
+    response_model=schemas.GenerateFollowUpResponse,
+    summary="Generate a Follow-Up Question",
+    description="Generate a meaningful follow-up question for an elder using provided question IDs."
+)
+def generate_follow_up_question_api(
+    input_data: schemas.GenerateFollowUpInput,  # Input schema
+    db: Session = Depends(database.get_db),
+):
+    """
+    Generate a follow-up question for an elder using provided question IDs.
+    """
+    # Validate elder existence
+    elder = crud.get_elder_by_id(db, elder_id=input_data.elder_id)
+    if not elder:
+        raise HTTPException(status_code=404, detail="Elder not found")
+
+    # Validate questions and retrieve answers
+    answers_with_questions = crud.get_answers_by_question_ids(
+        db, elder_id=input_data.elder_id, question_ids=input_data.question_ids
+    )
+    if not answers_with_questions:
+        raise HTTPException(
+            status_code=404, detail="No questions and answers found for the provided IDs"
+        )
+
+    # Prepare data for OpenAI
+    question_answer_pairs = [
+        {"question": question_text, "answer": answer.response}
+        for answer, question_text in answers_with_questions
+    ]
+
+    # Generate follow-up question using OpenAI
+    follow_up_question = generate_follow_up_question(question_answer_pairs)
+
+    # Save the follow-up question in the database
+    follow_up_question_data = schemas.QuestionCreate(text=follow_up_question)
+    new_question = crud.create_question(db, question=follow_up_question_data)
+
+    # Return the generated follow-up question
+    return schemas.GenerateFollowUpResponse(
+        generated_question=follow_up_question,
+        question_id=new_question.id,
+    )

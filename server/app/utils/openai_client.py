@@ -141,11 +141,11 @@ def generate_follow_up_question(question_answer_pairs: List[dict]) -> str:
         f"\n\n{context}\n\nFollow-up question:"
     )
 
-    response = client.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-4",
         messages=[
             {"role": "system", "content": "You are a helpful assistant that generates follow-up questions."},
             {"role": "user", "content": prompt}
         ]
     )
-    return response["choices"][0]["message"]["content"].strip()
+    return response.choices[0].message.content
