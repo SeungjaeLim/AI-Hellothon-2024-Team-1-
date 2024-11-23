@@ -42,12 +42,21 @@ class RecordBase(BaseModel):
     content: Optional[str] = None
 
 
-class RecordCreate(RecordBase):
+class RecordCreate(BaseModel):
     """
-    Schema for creating a new record.
+    Schema for creating a record in the database.
     """
+    title: str
+    content: Optional[str] = None
     elder_id: int
 
+
+class RecordCreateInput(BaseModel):
+    """
+    Schema for API input, including question IDs.
+    """
+    elder_id: int
+    question_ids: List[int]
 
 class Record(RecordBase):
     """

@@ -39,7 +39,7 @@ class Record(Base):
     elder = relationship("Elder", back_populates="records")
     images = relationship("Image", back_populates="record")
     record_questions = relationship("RecordQuestion", back_populates="record")
-
+    record_keywords = relationship("RecordKeyword", back_populates="record")  
 
 class Image(Base):
     """
@@ -49,12 +49,11 @@ class Image(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     record_id = Column(Integer, ForeignKey("records.id"), nullable=False)
-    url = Column(String(255), nullable=False)
+    url = Column(Text, nullable=False)  # Changed from String(255) to Text
     created_at = Column(TIMESTAMP, server_default="CURRENT_TIMESTAMP")
 
     # Relationships
     record = relationship("Record", back_populates="images")
-
 
 class Keyword(Base):
     """
@@ -65,7 +64,7 @@ class Keyword(Base):
     id = Column(Integer, primary_key=True, index=True)
     keyword = Column(String(255), unique=True, nullable=False)
     created_at = Column(TIMESTAMP, server_default="CURRENT_TIMESTAMP")
-
+    record_keywords = relationship("RecordKeyword", back_populates="keyword") 
 
 class KeywordPreference(Base):
     """
@@ -147,3 +146,18 @@ class GuideQuestion(Base):
     guide_id = Column(Integer, ForeignKey("activity_guides.id"), nullable=False)
     question_id = Column(Integer, ForeignKey("questions.id"), nullable=False)
     created_at = Column(TIMESTAMP, server_default="CURRENT_TIMESTAMP")
+
+class RecordKeyword(Base):
+    """
+    Table linking records and keywords
+    """
+    __tablename__ = "record_keywords"
+
+    id = Column(Integer, primary_key=True, index=True)
+    record_id = Column(Integer, ForeignKey("records.id"), nullable=False)
+    keyword_id = Column(Integer, ForeignKey("keywords.id"), nullable=False)
+    created_at = Column(TIMESTAMP, server_default="CURRENT_TIMESTAMP")
+
+    # Relationships
+    record = relationship("Record", back_populates="record_keywords")
+    keyword = relationship("Keyword", back_populates="record_keywords")

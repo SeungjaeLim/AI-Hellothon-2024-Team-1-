@@ -11,6 +11,13 @@ def get_elder_by_id(db: Session, elder_id: int):
     return db.query(models.Elder).filter(models.Elder.id == elder_id).first()
 
 
+def get_answers_by_question_id(db: Session, question_id: int):
+    """
+    Retrieve all answers for a specific question ID.
+    """
+    return db.query(models.Answer).filter(models.Answer.question_id == question_id).all()
+
+
 def get_all_elders(db: Session):
     """
     Retrieve all elders.
@@ -44,15 +51,16 @@ def get_records_by_elder_id(db: Session, elder_id: int):
     return db.query(models.Record).filter(models.Record.elder_id == elder_id).all()
 
 
-def create_record(db: Session, record: schemas.RecordCreate):
+def create_record(db: Session, record: schemas.RecordCreate) -> models.Record:
     """
-    Create a new record.
+    Create a new record in the database.
     """
     db_record = models.Record(**record.dict())
     db.add(db_record)
     db.commit()
     db.refresh(db_record)
     return db_record
+
 
 
 # Questions
@@ -93,17 +101,16 @@ def create_question(db: Session, question: schemas.QuestionCreate):
     return db_question
 
 
-# Answers
 def get_answers_by_question_ids(db: Session, elder_id: int, question_ids: list):
     """
-    Retrieve answers for a list of question IDs by a specific elder.
+    Retrieve answers for a list of question IDs by a specific elder, including question text.
     """
     return (
-        db.query(models.Answer)
+        db.query(models.Answer, models.Question.text)
+        .join(models.Question, models.Answer.question_id == models.Question.id)
         .filter(models.Answer.elder_id == elder_id, models.Answer.question_id.in_(question_ids))
         .all()
     )
-
 
 def create_answer(db: Session, answer: schemas.AnswerCreate):
     """
@@ -197,3 +204,58 @@ def get_questions_for_activity_guide(db: Session, guide_id: int):
         .filter(models.GuideQuestion.guide_id == guide_id)
         .all()
     )
+
+def create_or_get_keyword(db: Session, keyword: str) -> models.Keyword:
+    """
+    Create a new keyword if it doesn't exist, or retrieve the existing one.
+    Args:
+        db (Session): SQLAlchemy session object.
+        keyword (str): The keyword to create or retrieve.
+    Returns:
+        models.Keyword: The keyword instance.
+    """
+    db_keyword = db.query(models.Keyword).filter(models.Keyword.keyword == keyword).first()
+    if db_keyword:
+        return db_keyword
+
+    new_keyword = models.Keyword(keyword=keyword)
+    db.add(new_keyword)
+    try:
+        db.commit()
+        db.refresh(new_keyword)
+    except IntegrityError:
+        db.rollback()
+        db_keyword = db.query(models.Keyword).filter(models.Keyword.keyword == keyword).first()
+        if db_keyword:
+            return db_keyword
+        raise
+    return new_keyword
+
+def add_keyword_to_record(db: Session, record_id: int, keyword_id: int):
+    """
+    Link a keyword to a specific record.
+    Args:
+        db (Session): SQLAlchemy session object.
+        record_id (int): ID of the record.
+        keyword_id (int): ID of the keyword.
+    """
+    record_keyword = models.RecordKeyword(record_id=record_id, keyword_id=keyword_id)
+    db.add(record_keyword)
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise Exception(f"Keyword {keyword_id} is already linked to Record {record_id}")
+
+def add_image_to_record(db: Session, record_id: int, image_url: str):
+    """
+    Add an image to a specific record.
+    """
+    # Create an Image object
+    image = models.Image(record_id=record_id, url=image_url)
+    
+    # Add it to the session and commit
+    db.add(image)
+    db.commit()
+    db.refresh(image)
+    return image

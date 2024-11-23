@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
-from app import schemas, crud, database
+from app import schemas, crud, database, models
 
 router = APIRouter()
 
@@ -9,7 +9,7 @@ router = APIRouter()
 @router.post("/", response_model=schemas.Question)
 def add_question(question: schemas.QuestionCreate, db: Session = Depends(database.get_db)):
     """
-    Add a new question to the database.
+    직접 질문 추가
     """
     existing_question = crud.get_question_by_text(db, text=question.text)
     if existing_question:
@@ -21,7 +21,7 @@ def add_question(question: schemas.QuestionCreate, db: Session = Depends(databas
 @router.get("/", response_model=List[schemas.Question])
 def get_all_questions(db: Session = Depends(database.get_db)):
     """
-    Retrieve all questions from the database.
+    모든 질문 받아오기
     """
     questions = db.query(models.Question).all()
     if not questions:
@@ -32,7 +32,7 @@ def get_all_questions(db: Session = Depends(database.get_db)):
 @router.get("/{question_id}", response_model=schemas.Question)
 def get_question_by_id(question_id: int, db: Session = Depends(database.get_db)):
     """
-    Retrieve a question by its ID.
+    question ID로 질문 받아오기
     """
     question = crud.get_question_by_id(db, question_id=question_id)
     if not question:

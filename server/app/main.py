@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers import elders_router, questions_router, records_router, guides_router, answers_router
 from app.database import Base, engine
+from fastapi.staticfiles import StaticFiles
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -18,7 +19,7 @@ app.add_middleware(
     allow_methods=["*"],  # Allow all HTTP methods
     allow_headers=["*"],  # Allow all headers
 )
-
+app.mount("/static", StaticFiles(directory="./static"), name="static")
 # Create database tables
 Base.metadata.create_all(bind=engine)
 
