@@ -82,7 +82,7 @@ Alice AI Hellothon 2024 Team 1's Repository
 ![ERD](/Documents/Readme_image/ERD.png)
 
 ## 2.4 API 명세서
-
+![API](/Documents/Readme_image/API.png)
 
 
 
@@ -191,7 +191,10 @@ Alice AI Hellothon 2024 Team 1's Repository
 
 ## 6.2 개인 회고
 👩‍💻 [박송이]()
+
 👩‍💻 [심유경]()
+
 👩‍💻 [엄석훈]()
+
 👩‍💻 [임승재]()
 
