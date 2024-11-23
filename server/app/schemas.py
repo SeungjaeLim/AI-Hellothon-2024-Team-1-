@@ -90,6 +90,15 @@ class GenerateFollowUpResponse(BaseModel):
     question_id: int
 
 
+class Question(BaseModel):
+    id: int
+    text: str
+    is_reported: bool = False  # Default value for API response
+    created_at: datetime
+
+    class Config:
+        orm_mode = True
+        
 # Question schemas
 class QuestionBase(BaseModel):
     """
@@ -218,6 +227,22 @@ class GuideQuestion(BaseModel):
     class Config:
         orm_mode = True
 
+class Task(BaseModel):
+    """
+    Response schema for a task.
+    """
+    id: int
+    elder_id: int
+    year: int
+    week_number: int
+    status: int
+    iteration: int  # Ensure iteration is defined here
+    created_at: datetime
+
+    class Config:
+        orm_mode = True
+
+
 
 class TaskBase(BaseModel):
     """
@@ -235,16 +260,6 @@ class TaskCreate(TaskBase):
     """
     pass
 
-
-class Task(TaskBase):
-    """
-    Response schema for a task.
-    """
-    id: int
-    created_at: datetime
-
-    class Config:
-        orm_mode = True
 
 
 class Analysis(BaseModel):

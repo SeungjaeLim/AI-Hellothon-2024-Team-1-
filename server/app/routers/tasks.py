@@ -5,7 +5,6 @@ from typing import List
 from app import schemas, crud, database, models
 
 router = APIRouter()
-
 @router.get("/", response_model=List[schemas.Task])
 def get_weekly_tasks(
     year: int,
@@ -14,11 +13,12 @@ def get_weekly_tasks(
 ):
     """
     Retrieve all tasks for the given year and week number.
-    If a task does not exist for an elder, create it with status 0.
-    Update the task status based on conditions:
-      - If a record exists for the week, change status 0 -> 1
-      - If a guide exists for the week, change status 1 -> 2
-      - If the guide has been studied, change status 2 -> 3
+    Iteration is set to the count of 'have_studied' guides for the week.
+    Status is updated based on conditions:
+      - Status 0: Default
+      - Status 1: Number of records > iteration
+      - Status 2: Number of guides > iteration
+      - Status 3: Iteration is 3
     """
     # Calculate the start and end dates for the given week
     start_date = datetime.strptime(f"{year}-{week_number}-1", "%Y-%W-%w")
@@ -35,7 +35,7 @@ def get_weekly_tasks(
         # Check if the task already exists
         task = crud.get_task_by_elder_year_week(db, elder_id=elder.id, year=year, week_number=week_number)
 
-        # If not, create a new task with status 0
+        # If not, create a new task with status 0 and iteration 0
         if not task:
             task = models.Task(
                 elder_id=elder.id,
@@ -47,35 +47,51 @@ def get_weekly_tasks(
             db.commit()
             db.refresh(task)
 
-        # Check for records created this week
-        records_exist = (
+        # Calculate the iteration count (number of 'have_studied' guides for the week)
+        iteration_count = (
+            db.query(models.ActivityGuide)
+            .filter(
+                models.ActivityGuide.elder_id == elder.id,
+                models.ActivityGuide.have_studied == True,
+                models.ActivityGuide.created_at >= start_date,
+                models.ActivityGuide.created_at <= end_date,
+            )
+            .count()
+        )
+
+        # Count the number of records for the week
+        record_count = (
             db.query(models.Record)
             .filter(
                 models.Record.elder_id == elder.id,
                 models.Record.created_at >= start_date,
                 models.Record.created_at <= end_date,
             )
-            .first()
+            .count()
         )
-        if records_exist:
-            task.status = max(task.status, 1)
 
-        # Check for activity guides created this week
-        guides_exist = (
+        # Count the number of guides for the week
+        guide_count = (
             db.query(models.ActivityGuide)
             .filter(
                 models.ActivityGuide.elder_id == elder.id,
                 models.ActivityGuide.created_at >= start_date,
                 models.ActivityGuide.created_at <= end_date,
             )
-            .first()
+            .count()
         )
-        if guides_exist:
-            task.status = max(task.status, 2)
 
-            # If the guide has been studied, update the status to 3
-            if guides_exist.have_studied:
-                task.status = max(task.status, 3)
+        # Update status based on conditions
+        task.status = 0  # Default status
+        if record_count > iteration_count:
+            task.status = 1
+        if guide_count > iteration_count:
+            task.status = 2
+        if iteration_count >= 3:
+            task.status = 3
+
+        # Add iteration count to the task
+        task.iteration = iteration_count
 
         # Save changes to the database
         db.commit()
@@ -92,7 +108,7 @@ def get_tasks_for_this_week(
     """
     Retrieve all tasks for the current week.
     If a task does not exist for an elder, create it with status 0.
-    Update the task status based on conditions.
+    Update the task status and iteration count based on conditions.
     """
     # Get the current year and week number
     today = datetime.today()

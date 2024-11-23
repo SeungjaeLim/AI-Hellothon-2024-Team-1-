@@ -84,14 +84,13 @@ class KeywordPreference(Base):
 
 
 class Question(Base):
-    """
-    Questions table
-    """
     __tablename__ = "questions"
 
     id = Column(Integer, primary_key=True, index=True)
     text = Column(Text, nullable=False)
+    is_reported = Column(Boolean, default=False)  # New field
     created_at = Column(TIMESTAMP, server_default="CURRENT_TIMESTAMP")
+
 
 
 class RecordQuestion(Base):
@@ -175,10 +174,12 @@ class Task(Base):
     year = Column(Integer, nullable=False)
     week_number = Column(Integer, nullable=False)
     status = Column(Integer, nullable=False, default=0)
+    iteration = Column(Integer, nullable=False, default=0)  # Add iteration column
     created_at = Column(TIMESTAMP, server_default="CURRENT_TIMESTAMP")
 
     # Relationships
     elder = relationship("Elder", back_populates="tasks")
+
 
 class Analysis(Base):
     """
