@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import elders_router, questions_router, records_router, guides_router, answers_router, tasks_router
+from app.routers import elders_router, questions_router, records_router, guides_router, answers_router, tasks_router, reports_router
 from app.database import Base, engine
 from fastapi.staticfiles import StaticFiles
 
@@ -30,7 +30,7 @@ app.include_router(records_router, prefix="/records", tags=["Records"])
 app.include_router(guides_router, prefix="/guides", tags=["Guides"])
 app.include_router(answers_router, prefix="/answers", tags=["Answers"])
 app.include_router(tasks_router, prefix="/tasks", tags=["Tasks"])
-
+app.include_router(reports_router, prefix="/reports", tags=["Reports"])
 # Root endpoint
 @app.get("/", tags=["Root"])
 def root():

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Enum, Text, ForeignKey, Date, Boolean, TIMESTAMP
+from sqlalchemy import Column, Integer, String, Enum, Text, ForeignKey, Date, Boolean, TIMESTAMP, Float
 from sqlalchemy.orm import relationship
 from app.database import Base
 
@@ -180,3 +180,35 @@ class Task(Base):
     # Relationships
     elder = relationship("Elder", back_populates="tasks")
 
+class Analysis(Base):
+    """
+    Analysis table
+    """
+    __tablename__ = "analysis"
+
+    id = Column(Integer, primary_key=True, index=True)
+    elder_id = Column(Integer, ForeignKey("elders.id"), nullable=False)
+    question_id = Column(Integer, ForeignKey("questions.id"), nullable=False)
+    first_answer_id = Column(Integer, ForeignKey("answers.id"), nullable=False)
+    last_answer_id = Column(Integer, ForeignKey("answers.id"), nullable=False)
+    similarity = Column(Float, nullable=False)
+    report_id = Column(Integer, ForeignKey("reports.id"), nullable=False)
+    created_at = Column(TIMESTAMP, server_default="CURRENT_TIMESTAMP")
+
+    # Relationships
+    report = relationship("Report", back_populates="analyses")  # report 관계 추가
+
+class Report(Base):
+    """
+    Report table
+    """
+    __tablename__ = "reports"
+
+    id = Column(Integer, primary_key=True, index=True)
+    elder_id = Column(Integer, ForeignKey("elders.id"), nullable=False)
+    year = Column(Integer, nullable=False)
+    week_number = Column(Integer, nullable=False)  # 변경된 부분
+    created_at = Column(TIMESTAMP, server_default="CURRENT_TIMESTAMP")
+
+    # Relationships
+    analyses = relationship("Analysis", back_populates="report")

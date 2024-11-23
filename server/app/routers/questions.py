@@ -97,10 +97,7 @@ def add_random_question(db: Session = Depends(database.get_db)):
     from random import choice
     random_text = choice(random_questions)
 
-    existing_question = crud.get_question_by_text(db, text=random_text)
-    if existing_question:
-        raise HTTPException(status_code=400, detail="Question already exists")
-
+    
     question_data = schemas.QuestionCreate(text=random_text)
     return crud.create_question(db, question=question_data)
 

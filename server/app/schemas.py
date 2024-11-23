@@ -247,61 +247,26 @@ class Task(TaskBase):
         orm_mode = True
 
 
-
-# Report schemas
-class ReportBase(BaseModel):
-    """
-    Shared base schema for reports.
-    """
-    elder_id: int
-    year: int
-    week: int
-
-
-class ReportCreate(ReportBase):
-    """
-    Schema for creating a report.
-    """
-    pass
-
-
-class Report(ReportBase):
-    """
-    Response schema for a report.
-    """
+class Analysis(BaseModel):
     id: int
-    created_at: datetime
-
-    class Config:
-        orm_mode = True
-
-
-# Analysis schemas
-class AnalysisBase(BaseModel):
-    """
-    Shared base schema for analysis.
-    """
-    elder_id: int
     question_id: int
     first_answer_id: int
     last_answer_id: int
     similarity: float
-    report_id: int
-
-
-class AnalysisCreate(AnalysisBase):
-    """
-    Schema for creating an analysis.
-    """
-    pass
-
-
-class Analysis(AnalysisBase):
-    """
-    Response schema for an analysis.
-    """
-    id: int
+    report_id: Optional[int]
     created_at: datetime
 
     class Config:
         orm_mode = True
+
+
+class Report(BaseModel):
+    id: int
+    elder_id: int
+    year: int
+    week_number: int  # 변경된 부분
+    created_at: datetime
+    analyses: List[Analysis]
+
+    class Config:
+        from_attributes = True

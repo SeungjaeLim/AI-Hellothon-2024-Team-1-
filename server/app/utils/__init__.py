@@ -6,5 +6,6 @@ from .openai_client import (
     generate_title,
     extract_keywords,
     generate_image,
-    generate_follow_up_question
+    generate_follow_up_question,
+    get_text_embedding
 )

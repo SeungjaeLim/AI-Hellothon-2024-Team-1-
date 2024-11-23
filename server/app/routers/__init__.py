@@ -6,3 +6,4 @@ from .records import router as records_router
 from .guides import router as guides_router
 from .answers import router as answers_router
 from .tasks import router as tasks_router
+from .reports import router as reports_router

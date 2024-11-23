@@ -149,3 +149,13 @@ def generate_follow_up_question(question_answer_pairs: List[dict]) -> str:
         ]
     )
     return response.choices[0].message.content
+
+def get_text_embedding(text: str) -> List[float]:
+    """
+    Get the embedding for a given text using OpenAI's embedding model.
+    """
+    response = client.embeddings.create(
+        input=text,
+        model="text-embedding-3-small"
+    )
+    return response.data[0].embedding
