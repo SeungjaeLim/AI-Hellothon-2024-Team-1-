@@ -8,15 +8,36 @@ router = APIRouter()
 
 
 @router.post("/", response_model=schemas.Question)
-def add_question(question: schemas.QuestionCreate, db: Session = Depends(database.get_db)):
+def add_question(
+    question: schemas.QuestionCreate,
+    record_id: int,  # Accept record_id as a query parameter
+    db: Session = Depends(database.get_db),
+):
     """
-    직접 질문 추가
+    Add a question directly and associate it with a record.
     """
+    # Validate the record_id
+    record = crud.get_record_by_id(db, record_id=record_id)
+    if not record:
+        raise HTTPException(status_code=404, detail="Record not found")
+
+    # Check if the question already exists
     existing_question = crud.get_question_by_text(db, text=question.text)
     if existing_question:
         raise HTTPException(status_code=400, detail="Question already exists")
 
-    return crud.create_question(db, question)
+    # Create the question
+    new_question = crud.create_question(db, question)
+
+    # Create a record-question relationship
+    record_question = models.RecordQuestion(
+        record_id=record_id,
+        question_id=new_question.id,
+    )
+    db.add(record_question)
+    db.commit()
+
+    return new_question
 
 
 @router.get("/", response_model=List[schemas.Question])

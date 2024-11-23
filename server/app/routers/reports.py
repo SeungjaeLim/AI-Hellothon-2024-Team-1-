@@ -96,7 +96,6 @@ def get_reports(
             "created_at": report.created_at,
             "analyses": analyses_details,
         })
-    print(report_list)
     return report_list
 @router.post("/", response_model=List[schemas.Report])
 def create_reports(
