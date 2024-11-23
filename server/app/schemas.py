@@ -203,3 +203,11 @@ class GuideQuestion(BaseModel):
 
     class Config:
         orm_mode = True
+
+class ActivityGuideWithQuestionsCreate(BaseModel):
+    """
+    Schema for creating an activity guide with linked questions.
+    """
+    record_id: int
+    question_ids: List[int]
+    guide_data: ActivityGuideCreate

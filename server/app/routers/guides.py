@@ -5,17 +5,6 @@ from app import schemas, crud, database
 
 router = APIRouter()
 
-
-@router.post("/", response_model=schemas.ActivityGuide)
-def create_guide(
-    guide_data: schemas.ActivityGuideCreate, db: Session = Depends(database.get_db)
-):
-    """
-    Create a new activity guide.
-    """
-    return crud.create_activity_guide(db, guide=guide_data)
-
-
 @router.get("/", response_model=List[schemas.ActivityGuide])
 def get_all_guides(db: Session = Depends(database.get_db)):
     """
@@ -27,32 +16,33 @@ def get_all_guides(db: Session = Depends(database.get_db)):
     return guides
 
 
-@router.post("/record/{record_id}/questions", response_model=schemas.ActivityGuide)
+@router.post("/create_with_questions", response_model=schemas.ActivityGuide)
 def create_guide_with_questions(
-    record_id: int,
-    question_ids: List[int],
-    guide_data: schemas.ActivityGuideCreate,
+    guide_with_questions: schemas.ActivityGuideWithQuestionsCreate,
     db: Session = Depends(database.get_db),
 ):
     """
     Create an activity guide and link it to specific questions.
+    All parameters (record_id, question_ids, and guide_data) are provided in the request body.
     """
     # Validate record
-    record = crud.get_record_by_id(db, record_id=record_id)
+    record = crud.get_record_by_id(db, record_id=guide_with_questions.record_id)
     if not record:
         raise HTTPException(status_code=404, detail="Record not found")
 
     # Validate questions
-    for question_id in question_ids:
+    for question_id in guide_with_questions.question_ids:
         question = crud.get_question_by_id(db, question_id=question_id)
         if not question:
-            raise HTTPException(status_code=404, detail=f"Question with ID {question_id} not found")
+            raise HTTPException(
+                status_code=404, detail=f"Question with ID {question_id} not found"
+            )
 
     # Create the activity guide
-    new_guide = crud.create_activity_guide(db, guide=guide_data)
+    new_guide = crud.create_activity_guide(db, guide=guide_with_questions.guide_data)
 
     # Link the guide to each question
-    for question_id in question_ids:
+    for question_id in guide_with_questions.question_ids:
         crud.link_guide_to_question(db, guide_id=new_guide.id, question_id=question_id)
 
     return new_guide

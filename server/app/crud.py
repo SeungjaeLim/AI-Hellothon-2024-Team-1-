@@ -298,3 +298,9 @@ def create_question(db: Session, question: schemas.QuestionCreate):
     db.commit()
     db.refresh(db_question)
     return db_question
+
+def get_activity_guide_by_id(db: Session, guide_id: int):
+    """
+    Retrieve an activity guide by its ID.
+    """
+    return db.query(models.ActivityGuide).filter(models.ActivityGuide.id == guide_id).first()
