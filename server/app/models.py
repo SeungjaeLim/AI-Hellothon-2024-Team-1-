@@ -88,7 +88,6 @@ class Question(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     text = Column(Text, nullable=False)
-    is_reported = Column(Boolean, default=False)  # New field
     created_at = Column(TIMESTAMP, server_default="CURRENT_TIMESTAMP")
 
 

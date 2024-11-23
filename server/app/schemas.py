@@ -93,7 +93,6 @@ class GenerateFollowUpResponse(BaseModel):
 class Question(BaseModel):
     id: int
     text: str
-    is_reported: bool = False  # Default value for API response
     created_at: datetime
 
     class Config:
@@ -265,8 +264,11 @@ class TaskCreate(TaskBase):
 class Analysis(BaseModel):
     id: int
     question_id: int
+    question: str  # Add the question text
     first_answer_id: int
+    first_answer: str  # Add the first answer text
     last_answer_id: int
+    last_answer: str  # Add the last answer text
     similarity: float
     report_id: Optional[int]
     created_at: datetime
@@ -279,9 +281,9 @@ class Report(BaseModel):
     id: int
     elder_id: int
     year: int
-    week_number: int  # 변경된 부분
+    week_number: int
     created_at: datetime
-    analyses: List[Analysis]
+    analyses: List[Analysis]  # Updated to use the new Analysis schema
 
     class Config:
-        from_attributes = True
+        orm_mode = True
