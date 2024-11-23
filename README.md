@@ -13,6 +13,10 @@ Alice AI Hellothon 2024 Team 1's Repository
 
 ## 1.2 프로젝트 로고
 
+<div align="center">
+    <img src="/Documents/Readme_image/Logo1.png" alt="Logo1">
+    <img src="/Documents/Readme_image/Logo2.png" alt="Logo2">
+</div>
 
 ## 1.3 프로젝트 정보
 ### 개발 배경
@@ -50,13 +54,14 @@ Alice AI Hellothon 2024 Team 1's Repository
 
 # 2. 프로젝트 아키텍처
 ## 2.1 시스템 구성도
-
+![System Architecture](/Documents/Readme_image/SystemArchitecture.png)
 
 ## 2.2 유스케이스 플로우 차트
-
+![FlowChart1](/Documents/Readme_image/FlowChart1.png)
+![FlowChart2](/Documents/Readme_image/FlowChart2.png)
 
 ## 2.3 ERD (Entity Relationship Diagram)
-
+![ERD](/Documents/Readme_image/ERD.png)
 
 ## 2.4 API 명세서
 
