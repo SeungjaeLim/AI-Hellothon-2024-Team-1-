@@ -165,60 +165,129 @@ def transcribe_audio(file_path: str) -> str:
 
 def summarize_text(content: str) -> str:
     """
-    Summarize a given text using OpenAI GPT.
+    질의와 응답을 바탕으로 꼬리 질문이 이어진 노인의 일기 형식으로 텍스트를 재구성합니다.
+
     Args:
-        content (str): Text to summarize.
+        content (str): 질의-응답 형식의 원문 텍스트.
+    
     Returns:
-        str: Summarized text.
+        str: 노인의 일기 형식으로 변환된 텍스트.
+    """
+    example = """
+    예시:
+    질의와 응답:
+    Q: 오늘 기분은 어떠셨나요?
+    A: 괜찮았어요. 아침에 딸이랑 산책 다녀왔거든요.
+    Q: 산책하면서 특별히 기억에 남는 게 있었나요?
+    A: 길가에 코스모스가 너무 예쁘게 피었더라고요. 딸이 사진도 찍어줬어요.
+    Q: 꽃을 보니 어떤 생각이 드셨나요?
+    A: 어릴 때 아빠랑 코스모스 밭에 갔던 기억이 났어요. 그때도 이런 향기였죠.
+
+    결과 (일기 형식):
+    오늘은 참 기분 좋은 하루였어요. 아침에 딸이랑 함께 산책을 다녀왔거든요. 길가에 코스모스가 활짝 피어 있어서 발걸음을 멈추고 한참 바라봤답니다. 딸이 제 사진도 찍어줬는데, 꽃과 함께 찍은 제 모습이 마음에 들더라고요.
+
+    꽃 향기를 맡으니 어릴 적 아빠랑 코스모스 밭을 거닐던 기억이 떠올랐어요. 그때도 지금처럼 이런 향기가 가득했는데, 그 시절의 따뜻함이 느껴지는 하루였답니다.
+    """
+    prompt = f"""
+    다음 질의와 응답을 참고하여 자연스럽고 따뜻한 문체로 하루 일기를 작성하세요. 
+    각 응답을 하나로 엮어 이야기를 구성하고, 노인의 경험과 감정이 담길 수 있도록 세부적으로 작성하세요.
+    답변은 한 줄로 구성하며, 줄바꿈 없이 깔끔하게 작성하세요.
+    특수문자(\\, \", \')는 결과에 포함되지 않도록 주의하세요.
+
+    {example}
+
+    질의와 응답:
+    {content}
+
+    결과 (일기 형식):
     """
     response = client.chat.completions.create(
         model="gpt-4o",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant that summarizes text."},
-            {"role": "user", "content": f"Summarize the following text:\n{content}"}
+            {"role": "system", "content": "너는 노인들의 이야기를 일기 형식으로 재구성하는 따뜻한 어시스턴트입니다."},
+            {"role": "user", "content": prompt}
         ]
     )
-    print("Summarized text: ", response.choices[0].message.content)
-    return response.choices[0].message.content
+    return response.choices[0].message.content.strip()
 
 
 def generate_title(content: str) -> str:
     """
-    Generate a title for a given text using OpenAI GPT.
+    주어진 텍스트 내용을 바탕으로 적절한 제목을 생성합니다.
     Args:
-        content (str): Text for which to generate a title.
+        content (str): 제목을 생성할 텍스트.
     Returns:
-        str: Generated title.
+        str: 생성된 제목.
+    """
+    example = """
+    예시:
+    텍스트 내용:
+    "오늘 아침에는 아들과 함께 된장찌개를 먹으며 여행 계획을 세웠습니다. 봄에 제주도를 가기로 했고, 한라산에 오르고 싶다는 이야기를 나눴습니다."
+
+    생성된 제목:
+    "봄날의 제주도 여행과 가족의 따뜻한 식사"
+    """
+    prompt = f"""
+    다음 텍스트를 읽고, 내용을 잘 요약하며 독자의 관심을 끌 수 있는 매력적인 제목을 생성하세요. 제목은 간결하면서도 내용을 잘 반영해야 합니다. 답변은 한 줄로 구성하며, 줄바꿈 없이 깔끔하게 작성하세요. 특수문자(\\, \", \')는 결과에 포함되지 않도록 주의하세요.
+
+    {example}
+
+    텍스트 내용:
+    {content}
+
+    생성된 제목:
     """
     response = client.chat.completions.create(
         model="gpt-4o",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant that creates titles."},
-            {"role": "user", "content": f"Generate a title for the following content:\n{content}"}
+            {"role": "system", "content": "너는 주어진 텍스트에 적합한 제목을 만드는 능숙한 어시스턴트입니다."},
+            {"role": "user", "content": prompt}
         ]
     )
-    print("Title: ", response.choices[0].message.content)
-    return response.choices[0].message.content
+    return response.choices[0].message.content.strip()
+
 
 
 def extract_keywords(content: str) -> List[str]:
     """
-    Extract keywords from a given text using OpenAI GPT.
+    주어진 텍스트에서 최대 5개의 핵심 키워드를 추출합니다.
     Args:
-        content (str): Text from which to extract keywords.
+        content (str): 키워드를 추출할 텍스트.
     Returns:
-        List[str]: List of extracted keywords.
+        List[str]: 추출된 키워드 리스트 (최대 5개).
+    """
+    example = """
+    예시:
+    텍스트 내용:
+    "봄날 가족과 함께 떠나는 제주도 여행 계획. 한라산 등반과 전통 시장 방문."
+    
+    생성된 키워드:
+    제주도, 가족, 한라산, 여행, 전통 시장
+    """
+    prompt = f"""
+    아래 텍스트를 읽고, 가장 중요한 키워드 최대 5개를 쉼표로 구분하여 추출하세요.
+    키워드는 명확하고 간결하게 작성해야 하며, 중복되거나 관련 없는 단어는 피하세요.
+
+
+    {example}
+
+    텍스트 내용:
+    {content}
+
+    생성된 키워드:
     """
     response = client.chat.completions.create(
         model="gpt-4o",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant that extracts keywords. just keyword and comma separated"},
-            {"role": "user", "content": f"Extract keywords from the following text:\n{content}"}
+            {"role": "system", "content": "너는 주어진 텍스트에서 중요한 키워드를 추출하는 능숙한 어시스턴트입니다."},
+            {"role": "user", "content": prompt}
         ]
     )
-    keywords_text = response.choices[0].message.content
+    # 결과를 쉼표로 구분된 키워드로 반환
+    keywords_text = response.choices[0].message.content.strip()
     print("Keywords: ", keywords_text)
-    return [keyword.strip() for keyword in keywords_text.split(",")]
+    return [keyword.strip() for keyword in keywords_text.split(",")][:5]  # 최대 5개의 키워드만 반환
+
 
 def generate_image(prompt: str, size: str = "1024x1024", save_dir: str = "./static/images/") -> str:
     """
@@ -259,31 +328,51 @@ def generate_image(prompt: str, size: str = "1024x1024", save_dir: str = "./stat
     return f"/static/images/{file_name}"
 
 
-
 def generate_follow_up_question(question_answer_pairs: List[dict]) -> str:
     """
-    Generate a follow-up question using OpenAI GPT.
+    Generate a follow-up question with empathy and continuity using OpenAI GPT.
     Args:
         question_answer_pairs (List[dict]): List of question-answer pairs.
     Returns:
-        str: Generated follow-up question.
+        str: Empathetic response and a follow-up question.
+    """
+    example = """
+    예시:
+    대화 내역:
+    Q: 오늘 특별히 기억에 남는 일이 있었나요?
+    A: 아침에 마을회관에서 친구들과 윷놀이를 했어요. 정말 재밌었어요.
+    Q: 어떤 점이 가장 즐거우셨나요?
+    A: 친구들과 옛날 이야기도 하면서 웃고 떠들었던 게 정말 즐거웠어요.
+
+    공감과 꼬리 질문:
+    아, 친구들과 함께 윷놀이를 하셨군요! 옛날 이야기를 하면서 웃고 떠드는 시간이 정말 즐거웠을 것 같아요. 
+    그럼 다음엔 친구들과 함께 어떤 활동을 하고 싶으신가요?
     """
     context = "\n".join(
         [f"Q: {pair['question']}\nA: {pair['answer']}" for pair in question_answer_pairs]
     )
-    prompt = (
-        "Based on the following conversation history, generate a meaningful follow-up question:"
-        f"\n\n{context}\n\nFollow-up question:"
-    )
+    prompt = f"""
+    아래의 대화 내역을 참고하여, 먼저 응답에 공감과 칭찬을 담은 문장을 작성한 후 자연스럽고 관련 있는 꼬리 질문을 만들어 주세요.
+    노인의 감정과 경험을 존중하며, 긍정적인 분위기를 유지하도록 노력하세요.
+    답변은 한 줄로 구성하며, 줄바꿈 없이 깔끔하게 작성하세요.
+    특수문자(\\, \", \')는 결과에 포함되지 않도록 주의하세요.
 
+    {example}
+
+    대화 내역:
+    {context}
+
+    공감과 꼬리 질문:
+    """
     response = client.chat.completions.create(
-        model="gpt-4",
+        model="gpt-4o",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant that generates follow-up questions."},
+            {"role": "system", "content": "너는 노인들과의 대화를 이어가는 따뜻하고 공감 능력이 뛰어난 어시스턴트입니다."},
             {"role": "user", "content": prompt}
         ]
     )
-    return response.choices[0].message.content
+    return response.choices[0].message.content.strip()
+
 
 def get_text_embedding(text: str) -> List[float]:
     """
