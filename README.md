@@ -133,16 +133,16 @@ Alice AI Hellothon 2024 Team 1's Repository
 ## 4.1 쌤: 기억을 관리하다
 | **메인 페이지**  | **기록준비** |**교안제작** |
 |:------------:|:------------:|:------------:|
-| ![Screen00](/Documents/Screen/Screen00.png) | ![Screen00](/Documents/Screen/Screen00.png) | ![Screen00](/Documents/Screen/Screen00.png) |
+| ![Screen11](/Documents/Screen/Screen11.png) | ![Screen12](/Documents/Screen/Screen12.png) | ![Screen13](/Documents/Screen/Screen13.png) |
 | **인지활동(전)**  | **인지활동(중)** |**보고서** |
 |:------------:|:------------:|:------------:|
-| ![Screen00](/Documents/Screen/Screen00.png) | ![Screen00](/Documents/Screen/Screen00.png) | ![Screen00](/Documents/Screen/Screen00.png) |
+| ![Screen14](/Documents/Screen/Screen14.png) | ![Screen15](/Documents/Screen/Screen15.png) | ![Screen16](/Documents/Screen/Screen16.png) |
 
 
 ## 4.2 샘: 기억을 담다
-| ** 메인 페이지**  | **기록하기** |**나의추억** |
+| **메인 페이지**  | **기록하기** |**나의추억** |
 |:------------:|:------------:|:------------:|
-| ![Screen00](/Documents/Screen/Screen00.png) | ![Screen00](/Documents/Screen/Screen00.png) | ![Screen00](/Documents/Screen/Screen00.png) |
+| ![Screen01](/Documents/Screen/Screen01.png) | ![Screen02](/Documents/Screen/Screen02.png) | ![Screen03](/Documents/Screen/Screen03.png) |
 
 
 
