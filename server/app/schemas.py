@@ -1,8 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional, List
 from datetime import date, datetime
-from pydantic import BaseModel
-from typing import List
 
 
 # Elder schemas
@@ -60,6 +58,7 @@ class RecordCreateInput(BaseModel):
     elder_id: int
     question_ids: List[int]
 
+
 class Record(RecordBase):
     """
     Response schema for a record.
@@ -74,6 +73,7 @@ class Record(RecordBase):
         orm_mode = True
 
 
+# Generate Follow-Up Question schemas
 class GenerateFollowUpInput(BaseModel):
     """
     Input schema for generating a follow-up question.
@@ -81,12 +81,15 @@ class GenerateFollowUpInput(BaseModel):
     elder_id: int
     question_ids: List[int]
 
+
 class GenerateFollowUpResponse(BaseModel):
     """
     Response schema for the generated follow-up question.
     """
     generated_question: str
     question_id: int
+
+
 # Question schemas
 class QuestionBase(BaseModel):
     """
@@ -172,7 +175,9 @@ class ActivityGuideBase(BaseModel):
     """
     Shared base schema for activity guides (lesson plans).
     """
+    elder_id: int
     title: str
+    have_studied: bool = False
 
 
 class ActivityGuideCreate(ActivityGuideBase):
@@ -193,6 +198,15 @@ class ActivityGuide(ActivityGuideBase):
         orm_mode = True
 
 
+class ActivityGuideWithQuestionsCreate(BaseModel):
+    """
+    Schema for creating an activity guide with linked questions.
+    """
+    elder_id: int
+    title: str
+    question_ids: List[int]
+
+
 # Guide-Question relationship schema (optional, for debugging purposes)
 class GuideQuestion(BaseModel):
     """
@@ -204,10 +218,90 @@ class GuideQuestion(BaseModel):
     class Config:
         orm_mode = True
 
-class ActivityGuideWithQuestionsCreate(BaseModel):
+
+class TaskBase(BaseModel):
     """
-    Schema for creating an activity guide with linked questions.
+    Shared base schema for tasks.
     """
-    record_id: int
-    question_ids: List[int]
-    guide_data: ActivityGuideCreate
+    elder_id: int
+    year: int
+    week_number: int
+    status: int
+
+
+class TaskCreate(TaskBase):
+    """
+    Schema for creating a task.
+    """
+    pass
+
+
+class Task(TaskBase):
+    """
+    Response schema for a task.
+    """
+    id: int
+    created_at: datetime
+
+    class Config:
+        orm_mode = True
+
+
+
+# Report schemas
+class ReportBase(BaseModel):
+    """
+    Shared base schema for reports.
+    """
+    elder_id: int
+    year: int
+    week: int
+
+
+class ReportCreate(ReportBase):
+    """
+    Schema for creating a report.
+    """
+    pass
+
+
+class Report(ReportBase):
+    """
+    Response schema for a report.
+    """
+    id: int
+    created_at: datetime
+
+    class Config:
+        orm_mode = True
+
+
+# Analysis schemas
+class AnalysisBase(BaseModel):
+    """
+    Shared base schema for analysis.
+    """
+    elder_id: int
+    question_id: int
+    first_answer_id: int
+    last_answer_id: int
+    similarity: float
+    report_id: int
+
+
+class AnalysisCreate(AnalysisBase):
+    """
+    Schema for creating an analysis.
+    """
+    pass
+
+
+class Analysis(AnalysisBase):
+    """
+    Response schema for an analysis.
+    """
+    id: int
+    created_at: datetime
+
+    class Config:
+        orm_mode = True

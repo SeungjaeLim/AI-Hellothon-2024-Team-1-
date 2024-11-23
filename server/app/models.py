@@ -21,7 +21,8 @@ class Elder(Base):
     records = relationship("Record", back_populates="elder")
     keyword_preferences = relationship("KeywordPreference", back_populates="elder")
     answers = relationship("Answer", back_populates="elder")
-
+    tasks = relationship("Task", back_populates="elder")
+    
 
 class Record(Base):
     """
@@ -132,9 +133,10 @@ class ActivityGuide(Base):
     __tablename__ = "activity_guides"
 
     id = Column(Integer, primary_key=True, index=True)
+    elder_id = Column(Integer, ForeignKey("elders.id"), nullable=False)  # New column
     title = Column(String(255), nullable=False)
+    have_studied = Column(Boolean, default=False)
     created_at = Column(TIMESTAMP, server_default="CURRENT_TIMESTAMP")
-
 
 class GuideQuestion(Base):
     """
@@ -161,3 +163,20 @@ class RecordKeyword(Base):
     # Relationships
     record = relationship("Record", back_populates="record_keywords")
     keyword = relationship("Keyword", back_populates="record_keywords")
+
+class Task(Base):
+    """
+    Tasks table
+    """
+    __tablename__ = "tasks"
+
+    id = Column(Integer, primary_key=True, index=True)
+    elder_id = Column(Integer, ForeignKey("elders.id"), nullable=False)
+    year = Column(Integer, nullable=False)
+    week_number = Column(Integer, nullable=False)
+    status = Column(Integer, nullable=False, default=0)
+    created_at = Column(TIMESTAMP, server_default="CURRENT_TIMESTAMP")
+
+    # Relationships
+    elder = relationship("Elder", back_populates="tasks")
+

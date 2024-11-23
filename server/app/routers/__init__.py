@@ -5,3 +5,4 @@ from .questions import router as questions_router
 from .records import router as records_router
 from .guides import router as guides_router
 from .answers import router as answers_router
+from .tasks import router as tasks_router

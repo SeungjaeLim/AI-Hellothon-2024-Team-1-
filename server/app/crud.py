@@ -304,3 +304,39 @@ def get_activity_guide_by_id(db: Session, guide_id: int):
     Retrieve an activity guide by its ID.
     """
     return db.query(models.ActivityGuide).filter(models.ActivityGuide.id == guide_id).first()
+
+def get_task_by_elder_year_week(db: Session, elder_id: int, year: int, week_number: int):
+    """
+    Retrieve a task for a specific elder, year, and week number.
+    """
+    return (
+        db.query(models.Task)
+        .filter(
+            models.Task.elder_id == elder_id,
+            models.Task.year == year,
+            models.Task.week_number == week_number,
+        )
+        .first()
+    )
+
+
+def create_task(db: Session, task: schemas.TaskCreate):
+    """
+    Create a new task.
+    """
+    db_task = models.Task(**task.dict())
+    db.add(db_task)
+    db.commit()
+    db.refresh(db_task)
+    return db_task
+
+
+def update_task_status(db: Session, task: models.Task, status: int):
+    """
+    Update the status of an existing task.
+    """
+    task.status = status
+    db.commit()
+    db.refresh(task)
+    return task
+

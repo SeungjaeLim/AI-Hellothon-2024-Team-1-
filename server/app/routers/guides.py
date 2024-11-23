@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
-from app import schemas, crud, database
+from app import schemas, crud, database, models
 
 router = APIRouter()
 
@@ -23,12 +23,12 @@ def create_guide_with_questions(
 ):
     """
     Create an activity guide and link it to specific questions.
-    All parameters (record_id, question_ids, and guide_data) are provided in the request body.
+    All parameters (elder_id, title, and question_ids) are provided in the request body.
     """
-    # Validate record
-    record = crud.get_record_by_id(db, record_id=guide_with_questions.record_id)
-    if not record:
-        raise HTTPException(status_code=404, detail="Record not found")
+    # Validate elder
+    elder = crud.get_elder_by_id(db, elder_id=guide_with_questions.elder_id)
+    if not elder:
+        raise HTTPException(status_code=404, detail="Elder not found")
 
     # Validate questions
     for question_id in guide_with_questions.question_ids:
@@ -39,13 +39,41 @@ def create_guide_with_questions(
             )
 
     # Create the activity guide
-    new_guide = crud.create_activity_guide(db, guide=guide_with_questions.guide_data)
+    guide_data = models.ActivityGuide(
+        elder_id=guide_with_questions.elder_id,
+        title=guide_with_questions.title,
+        have_studied=False
+    )
+    db.add(guide_data)
+    db.commit()
+    db.refresh(guide_data)
 
     # Link the guide to each question
     for question_id in guide_with_questions.question_ids:
-        crud.link_guide_to_question(db, guide_id=new_guide.id, question_id=question_id)
+        crud.link_guide_to_question(db, guide_id=guide_data.id, question_id=question_id)
 
-    return new_guide
+    return guide_data
+
+
+@router.patch("/finish/{guide_id}", response_model=schemas.ActivityGuide)
+def finish_guide(
+    guide_id: int,
+    db: Session = Depends(database.get_db),
+):
+    """
+    Mark an activity guide as finished by setting have_studied to True.
+    """
+    # Fetch the activity guide by ID
+    guide = db.query(models.ActivityGuide).filter(models.ActivityGuide.id == guide_id).first()
+    if not guide:
+        raise HTTPException(status_code=404, detail="Guide not found")
+
+    # Update the have_studied column
+    guide.have_studied = True
+    db.commit()
+    db.refresh(guide)
+
+    return guide
 
 
 @router.get("/{guide_id}/questions", response_model=List[schemas.Question])
