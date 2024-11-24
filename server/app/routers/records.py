@@ -13,8 +13,6 @@ def get_all_records(db: Session = Depends(database.get_db)):
     Retrieve all records, including an image and keywords.
     """
     records = db.query(models.Record).order_by(models.Record.id.desc()).all()
-    if not records:
-        raise HTTPException(status_code=404, detail="No records found")
 
     response = []
     for record in records:
@@ -39,18 +37,12 @@ def get_records_for_elder(elder_id: int, db: Session = Depends(database.get_db))
     """
     Retrieve all records for a specific elder by elder_id, including images and keywords.
     """
-    elder = crud.get_elder_by_id(db, elder_id=elder_id)
-    if not elder:
-        raise HTTPException(status_code=404, detail="Elder not found")
-
     records = (
         db.query(models.Record)
         .filter(models.Record.elder_id == elder_id)
         .order_by(models.Record.id.desc())
         .all()
     )
-    if not records:
-        raise HTTPException(status_code=404, detail="No records found for this elder")
 
     # Enrich each record with image and keywords
     enriched_records = []
