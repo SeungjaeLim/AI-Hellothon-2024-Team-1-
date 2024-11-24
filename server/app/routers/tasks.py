@@ -34,7 +34,7 @@ def get_weekly_tasks(
     for elder in elders:
         # Check if the task already exists
         task = crud.get_task_by_elder_year_week(db, elder_id=elder.id, year=year, week_number=week_number)
-        print("Elder:", elder.id)
+        #print("Elder:", elder.id)
         # If not, create a new task with status 0 and iteration 0
         if not task:
             task = models.Task(
@@ -56,7 +56,7 @@ def get_weekly_tasks(
             )
             .count()
         )
-        print("Iteration count:", iteration_count)
+        #print("Iteration count:", iteration_count)
         # Count the number of records for the week
         record_count = (
             db.query(models.Record)
@@ -65,7 +65,7 @@ def get_weekly_tasks(
             )
             .count()
         )
-        print("Record count:", record_count)
+        #print("Record count:", record_count)
         # Count the number of guides for the week
         guide_count = (
             db.query(models.ActivityGuide)
@@ -74,7 +74,7 @@ def get_weekly_tasks(
             )
             .count()
         )
-        print("Guide count:", guide_count)
+        #print("Guide count:", guide_count)
 
         # Update status based on conditions
         task.status = 0  # Default status

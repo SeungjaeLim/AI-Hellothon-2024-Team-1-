@@ -126,8 +126,6 @@ def create_reports(
         .filter(
             models.ActivityGuide.elder_id == elder_id,
             models.ActivityGuide.have_studied == True,
-            models.ActivityGuide.created_at >= start_date,
-            models.ActivityGuide.created_at <= end_date,
         )
         .all()
     )
@@ -165,8 +163,6 @@ def create_reports(
                 .filter(
                     models.Answer.question_id == question.id,
                     models.Answer.elder_id == elder_id,
-                    models.Answer.response_date >= start_date,
-                    models.Answer.response_date <= end_date,
                 )
                 .order_by(models.Answer.response_date)
                 .all()
