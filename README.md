@@ -82,7 +82,7 @@ Alice AI Hellothon 2024 Team 1's Repository
 ![ERD](/Documents/Readme_image/ERD.png)
 
 ## 2.4 API 명세서
-![API](/Documents/Readme_image/API.png)
+[쌤샘 API 명세서](https://fjtskwttcrchrywg.tunnel-pt.elice.io/redoc)
 
 
 
