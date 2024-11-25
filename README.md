@@ -8,7 +8,12 @@ Alice AI Hellothon 2024 Team 1's Repository
 # 1. 프로젝트 개요
 ## 1.1 프로젝트 제목
 
-## 샘: 기억을 담다, 그리고 쌤: 기억을 관리하다
+## 쌤: 기억을 관리하다, 그리고 샘: 기억을 담다
+
+### [쌤: 기억을 관리하다](https://hanzpajqdkxagpyr.tunnel-pt.elice.io/caregiver/home)
+
+### [샘: 기억을 담다](https://hanzpajqdkxagpyr.tunnel-pt.elice.io/senior/home)
+
 
 
 ## 1.2 프로젝트 로고
@@ -66,7 +71,7 @@ Alice AI Hellothon 2024 Team 1's Repository
 
 
 ## 1.6 시연 영상 (생략 가능)
-🎞 시연 영상 [보러가기]()
+🎞 시연 영상 [보러가기](https://youtu.be/QQwFdVu0SUA)
 
 
 
