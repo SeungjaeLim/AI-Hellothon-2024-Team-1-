@@ -84,40 +84,49 @@ In the era of artificial intelligence, focusing on human "empathy," "emotions," 
 
 <div align="center">
     
-## 🛠️ TECH STACKS 🛠️
+# 3. Tech Stack
+
+
+
+### 🌐 **Languages**
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
 
-### 🎨 Frontend
+
+### 🎨 **Frontend**
 ![React](https://img.shields.io/badge/React-61DAFB.svg?&style=flat-square&logo=React&logoColor=white)
 ![Zustand](https://img.shields.io/badge/Zustand-563D7C.svg?&style=flat-square&logoColor=white)
 ![React Query](https://img.shields.io/badge/React%20Query-FF4154.svg?&style=flat-square&logo=ReactQuery&logoColor=white)
 
-### 🔧 Backend
-![PastAPI](https://img.shields.io/badge/PastAPI-000000.svg?&style=flat-square&logoColor=white)
 
-### 🗄️ Database
+### 🔧 **Backend**
+![FastAPI](https://img.shields.io/badge/FastAPI-009688.svg?&style=flat-square&logo=FastAPI&logoColor=white)
+
+
+### 🗄️ **Database**
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1.svg?&style=flat-square&logo=MySQL&logoColor=white)
 
-### ⚙️ DevOps & Deployment
-![Alice Cloud](https://img.shields.io/badge/Alice%20Cloud-0078D7.svg?&style=flat-square&logoColor=white)
 
-### 📦 Package Managers
+
+### ⚙️ **DevOps & Deployment**
+![Elice Cloud](https://img.shields.io/badge/EliceCloud-0078D7.svg?&style=flat-square)
+
+
+### 📦 **Package Managers**
 ![pnpm](https://img.shields.io/badge/pnpm-4B275F.svg?&style=flat-square&logo=pnpm&logoColor=white)
 ![pip](https://img.shields.io/badge/pip-3776AB.svg?&style=flat-square&logo=python&logoColor=white)
-![conda](https://img.shields.io/badge/conda-44A833.svg?&style=flat-square&logo=Anaconda&logoColor=white)
 
-### 🤝 Collaboration Tools
+### 🤝 **Collaboration Tools**
 ![GitHub](https://img.shields.io/badge/GitHub-181717.svg?&style=flat-square&logo=GitHub&logoColor=white)
 ![Figma](https://img.shields.io/badge/Figma-F24E1E.svg?&style=flat-square&logo=Figma&logoColor=white)
 ![Google Sheets](https://img.shields.io/badge/Google%20Sheets-34A853.svg?&style=flat-square&logo=GoogleSheets&logoColor=white)
 ![Discord](https://img.shields.io/badge/Discord-5865F2.svg?&style=flat-square&logo=Discord&logoColor=white)
 ![Notion](https://img.shields.io/badge/Notion-000000.svg?&style=flat-square&logo=Notion&logoColor=white)
 
-### 🛠️ Development Tools
+
+### 🛠️ **Development Tools**
 ![VSCode](https://img.shields.io/badge/VSCode-007ACC.svg?&style=flat-square&logo=VisualStudioCode&logoColor=white)
 ![Jupyter Notebook](https://img.shields.io/badge/Jupyter-F37626.svg?&style=flat-square&logo=Jupyter&logoColor=white)
-![Google Colab](https://img.shields.io/badge/Google%20Colab-F9AB00.svg?&style=flat-square&logo=GoogleColab&logoColor=white)
 
 </div>
 
@@ -165,13 +174,240 @@ In the era of artificial intelligence, focusing on human "empathy," "emotions," 
 ### 5.2.3 My Memories Page
 - AI generates personalized images and keywords based on recorded memories.
 
-# 6. Reflections
-## 6.1 Team Retrospective
+# 6. How to Run
+
+## 6.1. Backend Setup
+
+### 6.1.1. Run FastAPI Server
+
+1. Clone the Repository:
+```
+git clone https://github.com/SeungjaeLim/SaemSam.git
+cd SaemSam
+``` 
+
+2. Set Up the Environment:
+
+```
+python -m venv venv
+source venv/bin/activate  # On Windows, use venv\Scripts\activate
+```
+
+3. Install dependencies:
+```
+pip install -r requirements.txt
+```
+4. Run FastAPI server:
+```
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+### 6.1.2. Create the Database:
+
+1. Start your MySQL server.
+
+2. Create the database and tables using the following commands:
+
+```
+CREATE DATABASE saem CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE saem;
+
+-- Table: elders
+CREATE TABLE elders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    birth_date DATE NOT NULL,
+    gender ENUM('M', 'F') NOT NULL,
+    care_level ENUM('1', '2', '3', '4', '5') NOT NULL,
+    contact_info VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table: activity_guides
+CREATE TABLE activity_guides (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    elder_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    have_studied BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (elder_id) REFERENCES elders(id)
+);
+
+-- Table: guide_questions
+CREATE TABLE guide_questions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    guide_id INT NOT NULL,
+    question_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (guide_id) REFERENCES activity_guides(id),
+    FOREIGN KEY (question_id) REFERENCES questions(id)
+);
+
+-- Table: questions
+CREATE TABLE questions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    text TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table: answers
+CREATE TABLE answers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    question_id INT NOT NULL,
+    elder_id INT NOT NULL,
+    response TEXT NOT NULL,
+    response_date DATE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (question_id) REFERENCES questions(id),
+    FOREIGN KEY (elder_id) REFERENCES elders(id)
+);
+
+-- Table: records
+CREATE TABLE records (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    content TEXT,
+    elder_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (elder_id) REFERENCES elders(id)
+);
+
+-- Table: record_questions
+CREATE TABLE record_questions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    record_id INT NOT NULL,
+    question_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (record_id) REFERENCES records(id),
+    FOREIGN KEY (question_id) REFERENCES questions(id)
+);
+
+-- Table: record_keywords
+CREATE TABLE record_keywords (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    record_id INT NOT NULL,
+    keyword_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (record_id) REFERENCES records(id),
+    FOREIGN KEY (keyword_id) REFERENCES keywords(id)
+);
+
+-- Table: keywords
+CREATE TABLE keywords (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    keyword VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table: keyword_preferences
+CREATE TABLE keyword_preferences (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    elder_id INT NOT NULL,
+    keyword_id INT NOT NULL,
+    is_preferred BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (elder_id) REFERENCES elders(id),
+    FOREIGN KEY (keyword_id) REFERENCES keywords(id)
+);
+
+-- Table: images
+CREATE TABLE images (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    record_id INT NOT NULL,
+    url TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (record_id) REFERENCES records(id)
+);
+
+-- Table: analyses
+CREATE TABLE analyses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    elder_id INT NOT NULL,
+    question_id INT NOT NULL,
+    first_answer_id INT NOT NULL,
+    last_answer_id INT NOT NULL,
+    similarity FLOAT NOT NULL,
+    report_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (elder_id) REFERENCES elders(id),
+    FOREIGN KEY (question_id) REFERENCES questions(id),
+    FOREIGN KEY (first_answer_id) REFERENCES answers(id),
+    FOREIGN KEY (last_answer_id) REFERENCES answers(id),
+    FOREIGN KEY (report_id) REFERENCES reports(id)
+);
+
+-- Table: reports
+CREATE TABLE reports (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    elder_id INT NOT NULL,
+    year INT NOT NULL,
+    week_number INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (elder_id) REFERENCES elders(id)
+);
+
+-- Table: tasks
+CREATE TABLE tasks (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    elder_id INT NOT NULL,
+    year INT NOT NULL,
+    week_number INT NOT NULL,
+    status INT DEFAULT 0,
+    iteration INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (elder_id) REFERENCES elders(id)
+);
+```
+
+### 6.1.3. Running VLLM Servers for LLM and Embedding
+
+1. Navigate to the server Directory:
+
+```
+cd server
+```
+
+2. Run the VLLM Servers: Start the LLM and embedding servers using the script:
+```
+./vllm_serve.sh
+```
+- The script will:
+    - Create a tmux session named Ssaem.
+    - Start two VLLM servers:
+        - Model 1: `meta-llama/Meta-Llama-3-70B-Instruct`
+        - Model 2: `BAAI/bge-multilingual-gemma2`
+    - Automatically split the `tmux` panes and attach to the session.
+
+## 6.2. Frontend Setup
+1. Navigate to the Frontend Directory:
+```
+cd fe
+```
+
+2. Ensure pnpm is installed. If not, install it first:
+```
+npm install -g pnpm
+```
+
+3. Install frontend dependencies:
+```
+pnpm install
+```
+
+4. Run the Frontend Development Server:
+
+```
+pnpm dev --host 0.0.0.0 --port 5173
+```
+
+
+# 7. Reflections
+## 7.1 Team Retrospective
 - Defining the target audience as seniors and caregivers using the 5W1H method helped focus and detail our service planning.
 - Realized the diverse nature of seniors beyond just age brackets and the importance of cognitive activities in combating dementia.
 - Although we implemented a voice-based service, it could expand into multimedia formats like photos or videos for richer memory capturing.
 
-## 6.2 Individual Reflections
+## 7.2 Individual Reflections
 👩‍💻 [Songyi Park]()
 
 👩‍💻 [Yukyung Shim]()
