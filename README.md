@@ -1,97 +1,86 @@
-# AI-Hellothon-2024-Team-1- 
-Alice AI Hellothon 2024 Team 1's Repository
+# SAEM: Managing Memories, and SAM: Capturing Memories
 
-### 주제: AI에 마음을 담다
-인공지능 시대에, 사람의 "공감", "정서" 등과 같은 마음에 대해서
+🥈 2024 Elice AI Hellothon Excellence Award (2nd Place)
 
+### Theme: Putting Heart into AI
+In the era of artificial intelligence, focusing on human "empathy," "emotions," and other heartfelt aspects.
 
-# 1. 프로젝트 개요
-## 1.1 프로젝트 제목
+# 1. Project Overview
+## 1.1 Project Title
 
-## 쌤: 기억을 관리하다, 그리고 샘: 기억을 담다
+### SAEM: Managing Memories, and SAM: Capturing Memories
 
-### [쌤: 기억을 관리하다](https://hanzpajqdkxagpyr.tunnel-pt.elice.io/caregiver/home)
+#### [SAEM: Managing Memories](https://hanzpajqdkxagpyr.tunnel-pt.elice.io/caregiver/home)
 
-### [샘: 기억을 담다](https://hanzpajqdkxagpyr.tunnel-pt.elice.io/senior/home)
+#### [SAM: Capturing Memories](https://hanzpajqdkxagpyr.tunnel-pt.elice.io/senior/home)
 
-
-
-## 1.2 프로젝트 로고
+## 1.2 Project Logo
 
 <div align="center">
     <img src="/Documents/Readme_image/Logo2.png" alt="Logo2">
     <img src="/Documents/Readme_image/Logo1.png" alt="Logo1">
 </div>
 
-## 1.3 프로젝트 정보
-### 개발 배경
-- 고령 인구의 급증, 초고령 사회 및 치매 환자 증가
-- 요양보호사의 수요 급증 및 인력 부족 문제
-- 2025년 기준 초고령 사회(전체 인구 중 고령 인구 비율 20%; 1,000만 명 이상)에 진입 예정인 반면,
-- 요양보호사의 인지활동은 주 3회 이상, 월 12회 이상 실시하도록 제도화되어 있음
-- 그러나, 요양보호사의 수는 60만 명으로 그 수가 현저히 부족한 실정임
+## 1.3 Project Information
+### Development Background
+- The rapid growth of the elderly population, transitioning into a super-aged society, and increasing dementia cases.
+- A growing demand for caregivers and a shortage of personnel.
+- By 2025, South Korea is expected to become a super-aged society, where over 20% of the total population (more than 10 million people) will be elderly.
+- Caregivers are required by regulation to conduct cognitive activities at least 3 times a week or 12 times a month.
+- However, the current number of caregivers is only 600,000, far from meeting the demand.
 
-### 개발 목표
-- 노인들이 인지활동의 일환으로 음성으로 간편하게 일상을 기록하고,
-- 이를 기반으로 요양보호사가 대상자의 상태를 효율적으로 관리하고, 
-- 인지활동 교육을 원활히 진행할 수 있도록 보조하는 시스템을 구축하고자 함
+### Development Goal
+- Provide a simple voice-based journaling system for seniors as part of their cognitive activities.
+- Build a system to help caregivers efficiently manage seniors’ statuses and seamlessly facilitate cognitive activity education.
+  
+### SAM: Capturing Memories
+- A service enabling caregivers to create customized cognitive activity guides based on seniors' records.
+- Check dementia progression through tailored cognitive activities.
 
-### 쌤: 기억을 담다
-- 요양보호사가 노인 대상자의 기록을 바탕으로 맞춤형 인지활동 교육 교안 제작 기능을 제공하는 서비스
-- 맞춤형 인지활동 교육을 통해 대상자의 치매 진행 상태 등을 체크할 수 있음
+### SAEM: Managing Memories
+- A voice-based memo service for seniors to record their memories and daily life.
+- Activities like daily journaling and reminiscing can stimulate cognitive function, contributing to dementia prevention or slowing its progression.
+- Supports heartfelt experiences through senior-friendly prompts.
 
+### Application
+- Caregivers can use seniors’ records to smoothly conduct personalized cognitive activities.
+- Seniors’ conditions can be monitored via activity similarity analysis, and cognitive activities can help prevent or slow dementia progression.
 
-### 샘: 기억을 담다
-- 노인의 기억과 추억을 기록하는 음성 기반 메모 서비스
-- 노인의 일상을 기록하고 추억을 되새기는 활동은 인지 기능을 자극하고, 치매 예방과 진행 완화에 긍정적인 영향을 줄 수 있음
-- 노인 친화적인 질문 제공을 통해 마음을 담을 수 있도록 지원함
+### Expected Benefits
+- Seniors can maintain cognitive function by recording their daily lives.
+- Caregivers can streamline their daily tasks and effectively manage seniors' conditions, alleviating personnel shortages to some extent.
 
-### 활용방안
-- 요양보호사는 노인의 기록을 활용하여 개인 맞춤형 인지활동을 원활히 진행할 수 있음
-- 노인 대상자의 상태를 활동 내용 유사도를 통해 점검하고, 인지활동을 통해 노인의 치매 예방과 진행 악화를 방지함
+## 1.4 Development Period (2 weeks)
+⏰ November 10, 2024 – November 24, 2024
 
-### 기대효과
-- 노인들이 자신의 일상을 기록하며 인지 기능을 유지할 수 있음
-- 요양보호사들이 일상 업무를 간편화하고 대상자의 상태를 효과적으로 관리함으로써 인력 부족 문제를 일부 해결할 수 있음
+## 1.5 Team Introduction
+### AI Alice Hellothon 2024 Team 1
+👩‍💻 [Yukyung Shim](https://github.com/YukyungShim) (PM)
 
+👩‍💻 [Seungjae Lim](https://github.com/SeungjaeLim) (BE)
 
-## 1.4 개발 기간 (총 2주)
-⏰ 2024년 11월 10일 ~ 2024년 11월 24일
+👩‍💻 [Seokhun Eom](https://github.com/SeokhunEom) (FE)
 
+👩‍💻 [Songyi Park](https://github.com/songye38) (Designer)
 
-## 1.5 팀 소개
-### AI Alice Hellothon 2024 1팀
-👩‍💻 [심유경](https://github.com/YukyungShim) (PM)
+## 1.6 Demo Video (Optional)
+🎞 Watch Demo Video [Here](https://youtu.be/QQwFdVu0SUA)
 
-👩‍💻 [임승재](https://github.com/SeungjaeLim) (BE)
-
-👩‍💻 [엄석훈](https://github.com/SeokhunEom) (FE)
-
-👩‍💻 [박송이](https://github.com/songye38) (Designer)
-
-
-## 1.6 시연 영상 (생략 가능)
-🎞 시연 영상 [보러가기](https://youtu.be/QQwFdVu0SUA)
-
-
-
-# 2. 프로젝트 아키텍처
-## 2.1 시스템 구성도
+# 2. Project Architecture
+## 2.1 System Architecture Diagram
 ![System Architecture](/Documents/Readme_image/SystemArchitecture.png)
 
-## 2.2 유스케이스 플로우 차트
+## 2.2 Use Case Flow Charts
 ![FlowChart1](/Documents/Readme_image/FlowChart1.png)
 ![FlowChart2](/Documents/Readme_image/FlowChart2.png)
 
 ## 2.3 ERD (Entity Relationship Diagram)
 ![ERD](/Documents/Readme_image/ERD.png)
 
-## 2.4 API 명세서
-[쌤샘 API 명세서](https://fjtskwttcrchrywg.tunnel-pt.elice.io/redoc)
+## 2.4 API Documentation
+[SAM API Documentation](https://fjtskwttcrchrywg.tunnel-pt.elice.io/redoc)
 
-
-
-# 3. 기술 스택
+# 3. Tech Stack
 
 <div align="center">
     
@@ -132,74 +121,61 @@ Alice AI Hellothon 2024 Team 1's Repository
 
 </div>
 
-
-
-# 4. 화면
-## 4.1 쌤: 기억을 관리하다
-| **메인 페이지**  | **기록준비** |**교안제작** |
+# 4. Screenshots
+## 4.1 SAM: Managing Memories
+| **Main Page**  | **Preparing Records** |**Guide Creation** |
 |:------------:|:------------:|:------------:|
 | ![Screen11](/Documents/Screen/Screen11.png) | ![Screen12](/Documents/Screen/Screen12.png) | ![Screen13](/Documents/Screen/Screen13.png) |
-| **인지활동(전)**  | **인지활동(중)** |**보고서** |
+| **Cognitive Activity (Before)**  | **Cognitive Activity (During)** |**Report** |
 |:------------:|:------------:|:------------:|
 | ![Screen14](/Documents/Screen/Screen14.png) | ![Screen15](/Documents/Screen/Screen15.png) | ![Screen16](/Documents/Screen/Screen16.png) |
 
-
-## 4.2 샘: 기억을 담다
-| **메인 페이지**  | **기록하기** |**나의추억** |
+## 4.2 SAM: Capturing Memories
+| **Main Page**  | **Record Memories** |**My Memories** |
 |:------------:|:------------:|:------------:|
 | ![Screen01](/Documents/Screen/Screen01.png) | ![Screen02](/Documents/Screen/Screen02.png) | ![Screen03](/Documents/Screen/Screen03.png) |
 
+# 5. Feature Descriptions
 
+## 5.1 SAM: Managing Memories
 
-# 5. 기능 설명
+### 5.1.1 Main Page 
+- Management page for seniors’ cognitive activity records, guide creation, and education.
 
-## 5.1 쌤: 기억을 관리하다
+### 5.1.2 Preparing Records Page
+- Prepares records necessary for creating cognitive activity guides.
 
-### 5.1.1 메인 페이지 
-- 노인 대상자의 인지활동 기록, 교안제작, 인지활동 교육 등에 대한 관리 페이지
+### 5.1.3 Guide Creation Page
+- AI generates questions for cognitive activity based on records, with manual question addition.
 
-### 5.1.2 기록준비 페이지
-- 인지활동 교안 제작에 필요한 노인 대상자의 기록 준비
+### 5.1.4 Cognitive Activity Page
+- Conduct cognitive activity sessions using generated guide questions.
 
-### 5.1.3 교안제작 페이지
-- 기록을 바탕으로 AI가 질문 생성 및 질문 직접 추가 기능
+### 5.1.5 Report Page
+- Automatically generates reports upon completing 3 sessions weekly.
 
-### 5.1.4 인지활동 페이지
-- 생성된 교안 질문을 통한 인지활동 교육 수행
+## 5.2 SAM: Capturing Memories
 
-### 5.1.5 보고서 페이지
-- 주 3회 인지활동 완료 시 자동으로 보고서가 제작됨
+### 5.2.1 Main Page
+- Displays a list of recorded memories.
 
+### 5.2.2 Record Memories Page
+- Allows seniors to journal daily lives and memories as cognitive stimulation.
 
+### 5.2.3 My Memories Page
+- AI generates personalized images and keywords based on recorded memories.
 
-## 5.2 샘: 기억을 담다
+# 6. Reflections
+## 6.1 Team Retrospective
+- Defining the target audience as seniors and caregivers using the 5W1H method helped focus and detail our service planning.
+- Realized the diverse nature of seniors beyond just age brackets and the importance of cognitive activities in combating dementia.
+- Although we implemented a voice-based service, it could expand into multimedia formats like photos or videos for richer memory capturing.
 
-### 5.2.1 메인 페이지
-- 각각의 기록목록을 볼 수 있음
+## 6.2 Individual Reflections
+👩‍💻 [Songyi Park]()
 
-### 5.2.2 기록하기 페이지
-- 인지자극의 일환으로, 노인의 일상 기록 및 회상을 기록
+👩‍💻 [Yukyung Shim]()
 
-### 5.2.3 나의추억 페이지
-- 기록을 바탕으로 AI가 맞춤 이미지 및 키워드 자동 생성
+👩‍💻 [Seokhun Eom]()
 
-
-
-# 6. 총평
-## 6.1 팀 회고
-- 주제 회의 시 5W1H, 특히 Who를 노인 및 요양보호사로 서비스 대상자를 확정하니 서비스를 구체적으로 기획할 수 있었음
-
-- 노인의 특성을 단순 연령대로 구분하기엔 그 특성이 다양하다는 것과, 치매의 무서움과 인지활동의 중요성을 깨달음
-
-- 음성 서비스를 기획하고 개발했지만, 이를 사진이나 영상을 활용한 멀티미디어 메모로의 발전으로 확장시킬 수 있음
-
-
-## 6.2 개인 회고
-👩‍💻 [박송이]()
-
-👩‍💻 [심유경]()
-
-👩‍💻 [엄석훈]()
-
-👩‍💻 [임승재]()
-
+👩‍💻 [Seungjae Lim]()
